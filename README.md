@@ -28,5 +28,5 @@ Why bother creating this?
 
 Current limitations of trajectove view in `mdtraj`:
 
-- mouse sensitivity (?) is not that great compareted to VMD (actually I don't see any program (even chimera, pymol) has that kind of mouse sensitivy like the one in VMD).
+- mouse sensitivity, molecule rotation are not that great compareted to VMD (actually I don't see any program (even chimera, pymol) has that kind of mouse sensitivy like the one in VMD).
 - don't have reprsentation for nucleic acid.
