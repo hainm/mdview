@@ -16,6 +16,8 @@ enable_notebook()
 TrajectoryView(traj)
 ```
 
+We should bring this to jupyter notebook: http://istar.cse.cuhk.edu.hk/iview/
+
 Why bother creating this?
 
 - Developing a good GUI is very difficult. We should focus on a single package rather making different ones (mdtraj's view, chemview, pymol, ...). And it's fun to collaborate.
@@ -24,7 +26,6 @@ Why bother creating this?
 - integrate with [jupyter notebook] (https://jupyter.org/)
 - why not using VMD? VMD is a beast and I really like it. But I love Python, it's hard to bring python to VMD...
 - why not developing based on pymol? its license, not sure how to combine to jupyter notebook, many other things.
-
 
 Current limitations of trajectove view in `mdtraj`:
 
