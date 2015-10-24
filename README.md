@@ -16,7 +16,7 @@ enable_notebook()
 TrajectoryView(traj)
 ```
 
-We should bring this to jupyter notebook: http://istar.cse.cuhk.edu.hk/iview/
+Demo: http://istar.cse.cuhk.edu.hk/iview/
 
 Why bother creating this?
 
