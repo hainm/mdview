@@ -16,7 +16,9 @@ enable_notebook()
 TrajectoryView(traj)
 ```
 
-Demo: http://istar.cse.cuhk.edu.hk/iview/
+Demo: 
+- http://istar.cse.cuhk.edu.hk/iview/
+- http://biasmv.github.io/pv/demo.html
 
 Why bother creating this?
 
