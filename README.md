@@ -10,12 +10,24 @@ This is my experiment. Not guarantee to make it work, but the overall aim is to 
 
 Currently mdview license follows https://github.com/mdtraj/mdtraj/blob/master/LICENSE (LGPLv2+)
 
-Proposal (copied and lightly change from [mdtraj's website](http://mdtraj.org/latest/viewer.html))
+## Proposal 
+
+(copied and lightly change from [mdtraj's website](http://mdtraj.org/latest/viewer.html))
 
 ```python
 from mdview import TrajectoryView, enable_notebook
 enable_notebook()
-TrajectoryView(traj)
+
+# use mdtraj as backend
+import mdtraj as md
+traj = md.load(fname, topology_name)
+TrajectoryView(traj, backend='mdtraj')
+
+# use pytraj as backend
+import pytraj as pt
+traj = pt.load(fname, topology_name)
+TrajectoryView(traj, backend='pytraj')
+# 
 ```
 
 ## Demo from other packages:
