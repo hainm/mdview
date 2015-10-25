@@ -16,11 +16,11 @@ enable_notebook()
 TrajectoryView(traj)
 ```
 
-Demo: 
+## Demo from other packages:
 - http://istar.cse.cuhk.edu.hk/iview/
 - http://biasmv.github.io/pv/demo.html
 
-Why bother creating this?
+## Why bother creating this?
 
 - Developing a good GUI is very difficult. We should focus on a single package rather making different ones (mdtraj's view, chemview, pymol, ...). And it's fun to collaborate.
 
@@ -29,13 +29,13 @@ Why bother creating this?
 - why not using VMD? VMD is a beast and I really like it. But I love Python, it's hard to bring python to VMD...
 - why not developing based on pymol? its license, not sure how to combine to jupyter notebook, many other things.
 
-Current limitations of trajectove view in `mdtraj`:
+## Current limitations of trajectove view in `mdtraj`:
 
 - mouse sensitivity, molecule rotation are not that great compareted to VMD (actually I don't see any program (even chimera, pymol) has that kind of mouse sensitivy like the one in VMD).
 - don't have reprsentation for nucleic acid.
 - ...
 
 
-Why naming `mdview`?
+## Why naming `mdview`?
 - it's just temp name
 - I myself prefer short typing
