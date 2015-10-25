@@ -39,3 +39,7 @@ TrajectoryView(traj)
 ## Why naming `mdview`?
 - it's just temp name
 - I myself prefer short typing
+
+## Install
+
+`python setup.py install`
