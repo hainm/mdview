@@ -64,8 +64,8 @@ TrajectoryView(traj, backend='pytraj')
 (For more details, please the license in each file)
 
 - [mdtraj's developers] (https://github.com/mdtraj/mdtraj): original python implementation
-- Jacob Kelley (Context.js)
-- Eli Grey (FileSaver.js)
+- Jacob Kelley, [Context.js] (https://github.com/jakiestfu/Context.js)
+- Eli Grey, [FileSaver.js] (https://github.com/eligrey/FileSaver.js)
 - [iview developers] (https://github.com/HongjianLi/iview)
 - [GLmol developers] (https://github.com/biochem-fan/GLmol)
 - mrdoob, [three.js] (https://github.com/mrdoob/three.js)
