@@ -185,14 +185,16 @@ class TrajectoryView(DOMWidget):
         """Compute the secondary structure of the selected frame and
         format it for the browser
         """
-        SS_MAP = {'C': 'coil', 'H': 'helix', 'E': 'sheet', 'NA': 'coil'}
 
         top = self.trajectory.topology
         if self.backend == 'mdtraj':
+            SS_MAP = {'C': 'coil', 'H': 'helix', 'E': 'sheet', 'NA': 'coil'}
             dssp = md.compute_dssp(self.trajectory[self.frame])[0]
         elif self.backend == 'pytraj':
             # FIXME
-            dssp = pt.dssp(self.trajectory[self.frame], top=self.trajectory.topology)[1]
+            SS_MAP = {'0': 'coil', 'H': 'helix', 'E': 'sheet', 'NA': 'coil'}
+            dssp = pt.dssp(self.trajectory[self.frame],
+                    top=self.trajectory.topology)[1].flatten()
         result = {}
 
         # iterate over the (rindx, ss) pairs in enumerate(dssp),
@@ -205,8 +207,12 @@ class TrajectoryView(DOMWidget):
             for r in rindxs:
                 # add entry for each atom in the residue
                 for a in top.residue(r).atoms:
+                    try:
+                        ss = SS_MAP[ss]
+                    except KeyError:
+                        ss = 'coil'
                     result[a.index] = {
-                        'ss': SS_MAP[ss],
+                        'ss': ss,
                         'ssbegin': (r==rindxs[0] and ss in set(['H', 'E'])),
                         'ssend': (r==rindxs[-1] and ss in set(['H', 'E']))}
         return result
@@ -235,33 +241,62 @@ class TrajectoryView(DOMWidget):
 
         hetIndices = []
 
-        for atom in self.trajectory.topology.atoms:
-            atoms[atom.index] = {
+        if self.backend == 'pytraj':
+            from pytraj.core.elements import atom_element_arr, atomic_number_arr
+            elem_dict = dict(zip(atomic_number_arr, atomic_number_arr))
+            reslist = self.trajectory.topology.residuelist
+            moleculelist = self.trajectory.topology.moleculelist
+
+        for index, atom in enumerate(self.trajectory.topology.atoms):
+            if self.backend == 'mdtraj':
+                chain = atom.residue.chain.index
+                elem = atom.element.symbol if atom.element is not None else 'X'
+                resi = atom.residue.index
+                resn = atom.residue.name
+                serial = atom.index,
+            elif self.backend == 'pytraj':
+                chain = atom.molnum
+                resi = atom.resnum
+                elem = elem_dict[atom.atomic_number] 
+                resn = reslist[atom.resnum].name
+                serial = index
+
+            atoms[serial] = {
                 'alt': ' ',
                 'b' : 0,
-                'chain' : atom.residue.chain.index,
-                'elem': atom.element.symbol if atom.element is not None else 'X',
+                'chain' : chain,
+                'elem': elem,
                 'insc' : ' ',
                 'name' : atom.name,
-                'resi' : atom.residue.index,
-                'resn' : atom.residue.name,
-                'serial' : atom.index,
+                'resi' : resi,
+                'resn' : resn,
+                'serial' : serial,
                 'ss' : None,
                 'coord' : None,
                 'bonds' : [],
             }
+
             if atom.name == 'CA':
-                calphaIndices.append(atom.index)
+                calphaIndices.append(serial)
 
-            if atom.residue.is_water:
-                waterIndices.append(atom.index)
-            elif not atom.residue.is_protein:
-                ligandIndices.append(atom.index)
-            else:
-                peptideIndices.append(atom.index)
+            if self.backend == 'mdtraj':
+                if atom.residue.is_water:
+                    waterIndices.append(atom.index)
+                elif not atom.residue.is_protein:
+                    ligandIndices.append(atom.index)
+                else:
+                    peptideIndices.append(atom.index)
+            elif self.backend == 'pytraj':
+                if moleculelist[atom.molnum].is_solvent():
+                    waterIndices.append(serial)
+                else:
+                    peptideIndices.append(serial)
 
-        for ai, aj in self.trajectory.topology.bonds:
-            bondIndices.append((ai.index, aj.index))
+        if self.backend == 'mdtraj':
+            for ai, aj in self.trajectory.topology.bonds:
+                bondIndices.append((ai.index, aj.index))
+        elif self.backend == 'pytraj':
+            bondIndices = self.trajectory.topology.bond_indices.tolist()
 
         return {'atoms': atoms,
                 'bondIndices' : bondIndices,
