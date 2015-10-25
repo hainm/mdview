@@ -28,6 +28,7 @@ TrajectoryView(traj)
 - integrate with [jupyter notebook] (https://jupyter.org/)
 - why not using VMD? VMD is a beast and I really like it. But I love Python, it's hard to bring python to VMD...
 - why not developing based on pymol? its license, not sure how to combine to jupyter notebook, many other things.
+- make a light package. For example, if `pytraj` users want to use the trajectory view with jupyter notebook, they need to install `mdtraj` too, which instroduce additional level of complexity in installation.
 
 ## Current limitations of trajectove view in `mdtraj`:
 
