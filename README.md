@@ -44,3 +44,15 @@ TrajectoryView(traj)
 ## Install
 
 `python setup.py install`
+
+## Credits
+
+(For more details, please the license in each file)
+
+- [mdtraj's developers] (https://github.com/mdtraj/mdtraj): original python implementation
+- Jacob Kelley (Context.js)
+- Eli Grey (FileSaver.js)
+- [iview developers] (https://github.com/HongjianLi/iview)
+- [GLmol developers] (https://github.com/biochem-fan/GLmol)
+- mrdoob, [three.js] (https://github.com/mrdoob/three.js)
+- John Resig [jQuery] (http://jquery.org)
