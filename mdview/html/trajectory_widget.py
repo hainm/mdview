@@ -137,14 +137,14 @@ class TrajectoryView(DOMWidget):
     _frameData = Dict(sync=True)
 
     # Display options
-    camera = Enum(['perspective', 'orthographic'], 'perspective', sync=True)
+    camera = Enum(['perspective', 'orthographic'], 'orthographic', sync=True)
     background = Enum(['black', 'grey', 'white'], 'white', sync=True)
     colorBy = Enum(['spectrum', 'chain', 'secondary structure', 'residue',
                     'polarity', 'atom'], 'spectrum', sync=True)
     primaryStructure = Enum(['lines', 'stick', 'ball & stick', 'sphere',
                              'nothing'], 'nothing', sync=True)
     secondaryStructure = Enum(['ribbon', 'strand', 'cylinder & plate',
-                               'C alpha trace', 'nothing'], 'cylinder & plate',
+                               'C alpha trace', 'nothing'], 'ribbon',
                                sync=True)
     surfaceRepresentation = Enum(['Van der Waals surface','solvent excluded surface',
                     'solvent accessible surface', 'molecular surface',
@@ -154,14 +154,14 @@ class TrajectoryView(DOMWidget):
         '''
         '''
         if kwargs:
-            backend = kwargs.get('backend', 'mdtraj')
             if 'backend' in kwargs.keys():
+                backend = kwargs['backend']
                 kwargs.pop('backend')
         else:
             backend = 'mdtraj'
 
-        super(TrajectoryView, self).__init__(**kwargs)
         self.backend = backend
+        super(TrajectoryView, self).__init__(**kwargs)
         self.trajectory = trajectory
         self.frame = frame
 
@@ -176,8 +176,13 @@ class TrajectoryView(DOMWidget):
 
 
     def _update_frame_data(self):
+        if self.backend == 'mdtraj':
+            coordinates = self.trajectory.xyz[self.frame].tolist()
+        elif self.backend == 'pytraj':
+            # used for both Trajectory and TrajectoryIterator
+            coordinates = self.trajectory[self.frame].xyz.tolist()
         self._frameData = {
-            'coordinates' : self.trajectory.xyz[self.frame].tolist(),
+            'coordinates' : coordinates,
             'secondaryStructure' : self._computeSecondaryStructure()
         }
 
@@ -191,8 +196,8 @@ class TrajectoryView(DOMWidget):
             SS_MAP = {'C': 'coil', 'H': 'helix', 'E': 'sheet', 'NA': 'coil'}
             dssp = md.compute_dssp(self.trajectory[self.frame])[0]
         elif self.backend == 'pytraj':
-            # FIXME
-            SS_MAP = {'0': 'coil', 'H': 'helix', 'E': 'sheet', 'NA': 'coil'}
+            SS_MAP = {'0': 'coil', 'H': 'helix', 'T': 'helix', 'G': 'helix',
+                      'E': 'sheet', 'S': 'sheet', 'B': 'sheet'}
             dssp = pt.dssp(self.trajectory[self.frame],
                     top=self.trajectory.topology)[1].flatten()
         result = {}
@@ -207,12 +212,8 @@ class TrajectoryView(DOMWidget):
             for r in rindxs:
                 # add entry for each atom in the residue
                 for a in top.residue(r).atoms:
-                    try:
-                        ss = SS_MAP[ss]
-                    except KeyError:
-                        ss = 'coil'
                     result[a.index] = {
-                        'ss': ss,
+                        'ss': SS_MAP[ss],
                         'ssbegin': (r==rindxs[0] and ss in set(['H', 'E'])),
                         'ssend': (r==rindxs[-1] and ss in set(['H', 'E']))}
         return result
@@ -242,24 +243,19 @@ class TrajectoryView(DOMWidget):
         hetIndices = []
 
         if self.backend == 'pytraj':
-            from pytraj.core.elements import atom_element_arr, atomic_number_arr
-            elem_dict = dict(zip(atomic_number_arr, atomic_number_arr))
-            reslist = self.trajectory.topology.residuelist
             moleculelist = self.trajectory.topology.moleculelist
 
         for index, atom in enumerate(self.trajectory.topology.atoms):
             if self.backend == 'mdtraj':
                 chain = atom.residue.chain.index
                 elem = atom.element.symbol if atom.element is not None else 'X'
-                resi = atom.residue.index
-                resn = atom.residue.name
-                serial = atom.index,
             elif self.backend == 'pytraj':
                 chain = atom.molnum
-                resi = atom.resnum
-                elem = elem_dict[atom.atomic_number] 
-                resn = reslist[atom.resnum].name
-                serial = index
+                elem = atom.element[1]
+
+            resi = atom.residue.index
+            resn = atom.residue.name
+            serial = atom.index
 
             atoms[serial] = {
                 'alt': ' ',
