@@ -192,14 +192,14 @@ class TrajectoryView(DOMWidget):
         """
 
         top = self.trajectory.topology
+        SS_MAP = {'C': 'coil', 'H': 'helix', 'E': 'sheet', 'NA': 'coil'}
         if self.backend == 'mdtraj':
-            SS_MAP = {'C': 'coil', 'H': 'helix', 'E': 'sheet', 'NA': 'coil'}
             dssp = md.compute_dssp(self.trajectory[self.frame])[0]
         elif self.backend == 'pytraj':
-            SS_MAP = {'0': 'coil', 'H': 'helix', 'T': 'helix', 'G': 'helix',
-                      'E': 'sheet', 'S': 'sheet', 'B': 'sheet'}
-            dssp = pt.dssp(self.trajectory[self.frame],
-                    top=self.trajectory.topology)[1].flatten()
+            # need to specify `top=` since slicing pytraj's Trajectory
+            # with an int will result a Frame (no Topology)
+            dssp = pt.dssp_all_residues(self.trajectory[self.frame],
+                    top=self.trajectory.topology, simplified=True)[0]
         result = {}
 
         # iterate over the (rindx, ss) pairs in enumerate(dssp),
