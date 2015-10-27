@@ -207,7 +207,7 @@ var iview = function ($el) {
 	this.container.bind('mousewheel', function (e) {
 		e.preventDefault();
 		if (!me.scene) return;
-		me.rot.position.z -= e.originalEvent.wheelDelta * 0.025;
+		me.rot.position.z -= e.originalEvent.wheelDelta * 0.6;
 		me.render();
 	});
 	this.container.bind('DOMMouseScroll', function (e) {
