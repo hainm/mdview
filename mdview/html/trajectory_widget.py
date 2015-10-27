@@ -196,10 +196,8 @@ class TrajectoryView(DOMWidget):
         if self.backend == 'mdtraj':
             dssp = md.compute_dssp(self.trajectory[self.frame])[0]
         elif self.backend == 'pytraj':
-            # need to specify `top=` since slicing pytraj's Trajectory
-            # with an int will result a Frame (no Topology)
-            dssp = pt.dssp_all_residues(self.trajectory[self.frame],
-                    top=self.trajectory.topology, simplified=True)[0]
+            dssp = pt.dssp_all_residues(self.trajectory[self.frame:self.frame+1],
+                                        simplified=True)[0]
         result = {}
 
         # iterate over the (rindx, ss) pairs in enumerate(dssp),
