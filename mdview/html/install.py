@@ -20,6 +20,7 @@ require.config({
     paths: {
         'three': '//cdnjs.cloudflare.com/ajax/libs/three.js/r68/three.min',
         'iview' : '/nbextensions/mdview/iview',
+        '3Dmol' : '/nbextensions/mdview/3Dmol',
         'surface' : '/nbextensions/mdview/surface.min',
         'objexporter' : '/nbextensions/mdview/objexporter',
         'filesaver' : '/nbextensions/mdview/filesaver',

@@ -1,5 +1,4 @@
 from __future__ import absolute_import
-import base64
 from itertools import groupby
 
 try:
@@ -12,15 +11,14 @@ try:
 except ImportError:
     pass
 
-from IPython.display import display, Javascript
 try:
     # Jupyter 4.x
     from ipywidgets.widgets import DOMWidget, IntSlider, Box, interactive
-    from traitlets import Unicode, Bool, Bytes, CInt, Any, Dict, Enum
+    from traitlets import Unicode, Bool, CInt, Any, Dict, Enum
 except ImportError:
     # IPython 3.x
     from IPython.html.widgets import DOMWidget, IntSlider, Box, interactive
-    from IPython.utils.traitlets import Unicode, Bool, Bytes, CInt, Any, Dict, Enum
+    from IPython.utils.traitlets import Unicode, Bool, CInt, Any, Dict, Enum
 
 _module = 'nbextensions/mdview/widget_trajectory'
 
