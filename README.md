@@ -1,4 +1,5 @@
 # mdview
+
 Trajectory viewer on Jupyter notebook
 
 A fork from [mdtraj](https://github.com/mdtraj/mdtraj/tree/master/mdtraj/html) sub-package.
@@ -8,7 +9,7 @@ This is my experiment. Not guarantee to make it work, but the overall aim is to 
 
 ## License
 
-Currently mdview license follows https://github.com/mdtraj/mdtraj/blob/master/LICENSE (LGPLv2+)
+Currently mdview license follows [`mdtraj` license] (https://github.com/mdtraj/mdtraj/blob/master/LICENSE) (LGPLv2+)
 
 ## Proposal 
 
@@ -31,6 +32,7 @@ TrajectoryView(traj, backend='pytraj')
 ```
 
 ## Demo from other packages:
+
 - http://istar.cse.cuhk.edu.hk/iview/
 - http://biasmv.github.io/pv/demo.html
 
@@ -52,17 +54,27 @@ TrajectoryView(traj, backend='pytraj')
 
 
 ## Why naming `mdview`?
+
 - it's just temp name
 - I myself prefer short typing
 
 ## Install
 
-`python setup.py install`
+- from conda::
+
+    $ conda install mdview -c ambermd
+
+- from github
+
+    $ git clone https://github.com/mdview/mdview
+    $ cd mview
+    $ python setup.py install
 
 ## Credits
 
 (For more details, please the license in each file)
 
+- Hai Nguyen, patch for [pytraj] (https://github.com/Amber-MD/pytraj)
 - [mdtraj's developers] (https://github.com/mdtraj/mdtraj): original python implementation
 - Jacob Kelley, [Context.js] (https://github.com/jakiestfu/Context.js)
 - Eli Grey, [FileSaver.js] (https://github.com/eligrey/FileSaver.js)

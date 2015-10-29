@@ -922,9 +922,9 @@ void main()\n\
     loadCoordinates : function (src) {
         var natoms = src.length;
         for (var i = 0; i < natoms; i++) {
-            // convert nanometers to angstroms
-            this.atoms[i].coord = (new THREE.Vector3).fromArray(src[i])
-                .multiplyScalar(10);
+            // hainm: use angstroms
+            // convert nanometers to angstroms in python?
+            this.atoms[i].coord = (new THREE.Vector3).fromArray(src[i]);
         }
     },
 
