@@ -10,7 +10,6 @@ define([
     "jquery",
     "nbextensions/widgets/widgets/js/widget",
     "iview",
-    "3Dmol",
     "contextmenu",
     "three",
     "filesaver",
