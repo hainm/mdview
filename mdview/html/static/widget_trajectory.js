@@ -29,8 +29,7 @@ define([
     var TrajectoryView = widget.DOMWidgetView.extend({
         render : function() {
             var canvas = $("<canvas/>").height(HEIGHT).width(WIDTH);
-            //var iv = new iview(canvas);
-            var iv = $3Dmol.createViewer(element, config);
+            var iv = new iview(canvas);
             var container = $('<div/>').css({width: HEIGHT_PX, height: WIDTH_PX})
                 .resizable({
                     aspectRatio: 1,
